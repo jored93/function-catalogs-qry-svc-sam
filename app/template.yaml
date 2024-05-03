@@ -1,0 +1,35 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  function-catalogs-qry-svc
+
+  Sample SAM Template for function-catalogs-qry-svc
+
+Globals:
+  Function:
+    Timeout: 3
+
+    Tracing: Active
+  Api:
+    TracingEnabled: true
+Resources:
+  CatalogsQryFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: handler.handler
+      Runtime: nodejs18.x
+      CodeUri: dist/functions/catalogsQry
+      Architectures:
+      - x86_64
+      Events:
+        CatalogsQry:
+          Type: Api
+          Properties:
+            Path: /catalogs
+            Method: get
+
+Outputs:
+  WebEndpoint:
+    Description: API Gateway endpoint URL for Prod stage
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/local/"
+
